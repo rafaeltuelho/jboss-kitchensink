@@ -1,0 +1,16 @@
+echo "start an embeded server instance for  CLI \n"
+embed-server --server-config=standalone.xml --std-out=echo
+
+echo "add JDBC Driver Module..."
+module add --name=org.postgresql --resources=/tmp/postgresql-9.3-1101.jdbc41.jar --dependencies=javax.api,javax.transaction.api
+
+echo "add the JDBC Driver Subsystem..."
+/subsystem=datasources/jdbc-driver=postgresql:add(driver-name=postgresql,driver-module-name=org.postgresql,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
+
+#data-source add --name=postgresDS --jndi-name=java:jboss/datasources/PostgresDS --driver-name=postgresql --connection-url=jdbc:postgresql://127.0.0.1:5432/postgres --user-name=postgres --password=postgres --validate-on-match=true --background-validation=false --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter
+
+#/subsystem=datasources/data-source=PostgresDS:test-connection-in-pool
+
+stop-embedded-server
+
+echo "CLI batch finished!"
