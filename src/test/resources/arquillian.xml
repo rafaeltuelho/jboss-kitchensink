@@ -29,11 +29,14 @@
    <defaultProtocol type="Servlet 3.0" />
 
      <!-- Example configuration for a remote JBoss EAP instance -->
-   <container qualifier="jboss" default="true">
+   <container qualifier="wildfly-embedded" default="true">
         <!-- By default, arquillian will use the JBOSS_HOME environment variable.  Alternatively, the configuration below can be uncommented. -->
-        <!--<configuration> -->
-        <!--<property name="jbossHome">/path/to/jboss/as</property> -->
-        <!--</configuration> -->
+        <configuration>
+          <!--<property name="jbossHome">/path/to/jboss/as</property> -->
+          <property name="outputToConsole">true</property>
+          <property name="javaVmArguments">-Djboss.socket.binding.port-offset=200</property>
+          <property name="managementPort">10190</property>
+        </configuration>
    </container>
 
 </arquillian>
