@@ -382,7 +382,7 @@
                         <artifactId>maven-war-plugin</artifactId>
                         <version>${version.war.plugin}</version>
                         <configuration>
-                            <outputDirectory>deployments</outputDirectory>
+                            <outputDirectory>osev3/docker/custom-eap7/deployments</outputDirectory>
                             <warName>ROOT</warName>
                         </configuration>
                     </plugin>

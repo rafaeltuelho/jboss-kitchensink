@@ -7,7 +7,7 @@ node {
     echo 'Building project'
     def mvnHome = tool 'M3'
     def javaHome = tool 'jdk8'
-    sh "${mvnHome}/bin/mvn package -Popenshift -DskipTests"
+    sh "${mvnHome}/bin/mvn clean package -Popenshift -DskipTests"
 
     stage 'Build image and deploy in Dev'
     echo 'Building docker image and deploying to Dev'
@@ -34,8 +34,8 @@ node {
 def buildKitchensink(String project){
     projectSet(project)
 
-    sh "cat ./osev3/docker/custom-eap7/Dockerfile | oc new-build --name=kitchensink --binary --strategy=docker -l app=kitchensink  -D - || echo 'Build exists'"
-    sh "oc start-build kitchensink --from-dir=. --follow"
+    sh "oc new-build --name=kitchensink --binary --strategy=docker -l app=kitchensink || echo 'Build exists'"
+    sh "oc start-build kitchensink --from-dir=./osev3/docker/custom-eap7 --follow"
     appDeploy()
 }
 
