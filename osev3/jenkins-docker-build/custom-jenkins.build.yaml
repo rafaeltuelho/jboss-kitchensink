@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  name: custom-jenkins-build
+spec:
+  source:
+    git:
+      uri: https://github.com/rafaeltuelho/custom-jenkins-ose-config
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+        kind: DockerImage
+        name: registry.access.redhat.com/openshift3/jenkins-1-rhel7
+    type: Source
+  output:
+    to:
+      kind: ImageStreamTag
+      name: jenkins:latest

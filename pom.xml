@@ -83,14 +83,18 @@
         <!-- Define the version of the JBoss BOMs we want to import to specify
             tested stacks. -->
         <version.jboss.bom.eap>7.0.0.GA</version.jboss.bom.eap>
-
+        
         <!-- other plug-in versions -->
         <version.surefire.plugin>2.10</version.surefire.plugin>
         <version.war.plugin>2.1.1</version.war.plugin>
+        <version.maven-dep.plugin>2.10</version.maven-dep.plugin>
+        <version.arquilian-wildfly-embedded.plugin>2.0.0.Final</version.arquilian-wildfly-embedded.plugin>
+        <version.wildfly-dist.plugin>10.0.0.Final</version.wildfly-dist.plugin>
 
         <!-- maven-compiler-plugin -->
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
+        
     </properties>
 
     <dependencyManagement>
@@ -264,6 +268,72 @@
                         </configuration>
                     </plugin>
                 </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <!-- An optional Arquillian testing profile that executes tests using an embedded
+                Wildfly instance -->
+            <!-- This profile will download a wildfly binary dist, extract it in target directory,
+                 and execute the test, shutting it down when done -->
+            <!-- Run with: mvn clean test -Parq-wildfly-embedded -->
+            <id>arq-wildfly-embedded</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.wildfly.arquillian</groupId>
+                    <artifactId>wildfly-arquillian-container-managed</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+            <build>
+				<plugins>
+					<!-- You need the maven dependency plugin to download locally a zip with 
+						the server, unless you provide your own, it will download under the /target 
+						directory -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<version>${version.maven-dep.plugin}</version>
+						<executions>
+							<execution>
+								<id>unpack</id>
+								<phase>process-test-classes</phase>
+								<goals>
+									<goal>unpack</goal>
+								</goals>
+								<configuration>
+									<artifactItems>
+										<artifactItem>
+											<groupId>org.wildfly</groupId>
+											<artifactId>wildfly-dist</artifactId>
+											<version>${version.wildfly-dist.plugin}</version>
+											<type>zip</type>
+											<overWrite>false</overWrite>
+											<outputDirectory>target</outputDirectory>
+										</artifactItem>
+									</artifactItems>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>${version.surefire.plugin}</version>
+						<configuration>
+							<!-- Fork every test because it will launch a separate AS instance -->
+							<forkMode>always</forkMode>
+							<systemPropertyVariables>
+								<java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+								<!-- the maven dependency plugin will have already downloaded the server 
+									on /target -->
+								<jboss.home>${project.basedir}/target/wildfly-${version.wildfly-dist.plugin}</jboss.home>
+								<module.path>${project.basedir}/target/wildfly-${version.wildfly-dist.plugin}/modules</module.path>
+							</systemPropertyVariables>
+							<redirectTestOutputToFile>true</redirectTestOutputToFile>
+						</configuration>
+					</plugin>					
+				</plugins>
             </build>
         </profile>
 
