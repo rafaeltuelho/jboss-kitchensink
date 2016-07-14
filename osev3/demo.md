@@ -134,8 +134,11 @@ oc new-app -p MEMORY_LIMIT=1024Mi https://raw.githubusercontent.com/openshift/or
 ## Use Cases
 
 ```
+git commit -am "fixing arquilian tests"
+git push -u origin master
 
 oc login
+oc rsh jenkins-1-jf0je
 export TERM=xterm
 tail -F /var/lib/jenkins/jobs/JBoss\ Kitchensink\ Quickstart/workspace/target/wildfly-10.0.0.Final/standalone/log/server.log
 ```
