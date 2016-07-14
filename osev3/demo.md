@@ -130,3 +130,12 @@ oc new-app -p MEMORY_LIMIT=1024Mi https://raw.githubusercontent.com/openshift/or
   * Internal DNS: nexus.ci.svc.cluster.local
   * credenciais:
     * admin/admin123
+
+## Use Cases
+
+```
+
+oc login
+export TERM=xterm
+tail -F /var/lib/jenkins/jobs/JBoss\ Kitchensink\ Quickstart/workspace/target/wildfly-10.0.0.Final/standalone/log/server.log
+```
