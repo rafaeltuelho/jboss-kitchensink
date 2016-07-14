@@ -6,9 +6,7 @@
  * Create an OpenShift 3 Application in Red Hat JBoss Developer Studio: https://access.redhat.com/articles/2380251
 
  * Red Hat Hello World MSA demo: https://github.com/redhat-helloworld-msa/helloworld-msa
-
   * CI/CD Pipeline: https://github.com/redhat-helloworld-msa/helloworld-msa/blob/master/cicd.adoc
-
 
 ## Setup
 
@@ -73,10 +71,46 @@ Username: openshift-dev
 Password:
 Login successful.
 
-oc new-project ci
+oc new-project ci --display-name="Continuous Integration for OpenShift" --description="This project holds all continuous integration required infrastructure, like Nexus, Jenkins,..."
 
 oc new-app -p MEMORY_LIMIT=1024Mi https://raw.githubusercontent.com/openshift/origin/master/examples/jenkins/jenkins-ephemeral-template.json
 
+```
+
+ * Install a Custom Sonatype Nexus Maven repo manager
+  * First we need to create a persistent volume
+
+  inside the CDK vagrant box...
+  ```
+  cd $CDK_HOME
+  vagrant ssh
+  ```
+
+  execute...
+  ```
+  mkdir /tmp/nexus
+  chmod 777 /tmp/nexus
+
+  oc login
+  Authentication required for https://127.0.0.1:8443 (openshift)
+  Username: admin
+  Password:
+  Login successful.
+
+  oc create -f https://raw.githubusercontent.com/jorgemoralespou/nexus-ose/master/nexus/ose3/resources/pv/hostpath-pv.json
+
+  oc get scc hostaccess -o json \
+          | sed '/\"users\"/a \"system:serviceaccount:ci:nexus\",'  \
+          | oc replace scc hostaccess -f -
+
+  ```
+
+  * Now we can create the Nexus app using the `nexus-persistent` template
+
+  ```
+  oc create -f https://raw.githubusercontent.com/jorgemoralespou/nexus-ose/master/nexus/ose3/nexus-resources.json -n ci
+
+  oc new-app --template=nexus-persistent --param=APPLICATION_HOSTNAME=nexus-ci.cdk.vm.10.2.2.2.xip.io,SIZE=5Gi
 ```
 
 ## URLs
@@ -87,7 +121,13 @@ oc new-app -p MEMORY_LIMIT=1024Mi https://raw.githubusercontent.com/openshift/or
     * admin/admin
     * openshift-dev/devel
 
-* Jenkins
- * https://jenkins-ci.cdk.vm.10.1.2.2.xip.io/
- * credenciais:
-   * admin/password
+ * Jenkins
+  * https://jenkins-ci.cdk.vm.10.1.2.2.xip.io/
+  * credenciais:
+    * admin/password
+
+ * Nexus
+  * External DNS: http://nexus-ci.cdk.vm.10.1.2.2.xip.io/
+  * Internal DNS: nexus.ci.svc.cluster.local
+  * credenciais:
+    * admin/admin123
