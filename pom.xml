@@ -43,7 +43,7 @@
         in the Development Guide for Red Hat JBoss Enterprise Application Platform located here:
 
         https://access.redhat.com/documentation/en/jboss-enterprise-application-platform/
-    -->
+    
     <repositories>
         <repository>
             <id>jboss-enterprise-maven-repository</id>
@@ -69,6 +69,33 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
+    -->
+
+    <!-- Use the internal Nexus repository to improve PODs build times -->
+    <repositories>
+      <repository>
+        <id>nexus-repository</id>
+        <url>http://nexus.ci.svc.cluster.local:8081/content/groups/public/</url>
+        <releases>
+          <enabled>true</enabled>
+        </releases>
+        <snapshots>
+          <enabled>true</enabled>
+        </snapshots>
+      </repository>
+    </repositories>
+    <pluginRepositories>
+      <pluginRepository>
+        <id>nexus-plugin-repository</id>
+        <url>http://nexus.ci.svc.cluster.local:8081/content/groups/public/</url>
+        <releases>
+          <enabled>true</enabled>
+        </releases>
+        <snapshots>
+          <enabled>true</enabled>
+        </snapshots>
+      </pluginRepository>
+    </pluginRepositories>
 
     <properties>
         <!-- Explicitly declaring the source encoding eliminates the following
@@ -83,7 +110,7 @@
         <!-- Define the version of the JBoss BOMs we want to import to specify
             tested stacks. -->
         <version.jboss.bom.eap>7.0.0.GA</version.jboss.bom.eap>
-        
+
         <!-- other plug-in versions -->
         <version.surefire.plugin>2.10</version.surefire.plugin>
         <version.war.plugin>2.1.1</version.war.plugin>
@@ -94,7 +121,7 @@
         <!-- maven-compiler-plugin -->
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
-        
+
     </properties>
 
     <dependencyManagement>
@@ -287,8 +314,8 @@
             </dependencies>
             <build>
 				<plugins>
-					<!-- You need the maven dependency plugin to download locally a zip with 
-						the server, unless you provide your own, it will download under the /target 
+					<!-- You need the maven dependency plugin to download locally a zip with
+						the server, unless you provide your own, it will download under the /target
 						directory -->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
@@ -325,14 +352,14 @@
 							<forkMode>always</forkMode>
 							<systemPropertyVariables>
 								<java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-								<!-- the maven dependency plugin will have already downloaded the server 
+								<!-- the maven dependency plugin will have already downloaded the server
 									on /target -->
 								<jboss.home>${project.basedir}/target/wildfly-${version.wildfly-dist.plugin}</jboss.home>
 								<module.path>${project.basedir}/target/wildfly-${version.wildfly-dist.plugin}/modules</module.path>
 							</systemPropertyVariables>
 							<redirectTestOutputToFile>true</redirectTestOutputToFile>
 						</configuration>
-					</plugin>					
+					</plugin>
 				</plugins>
             </build>
         </profile>
