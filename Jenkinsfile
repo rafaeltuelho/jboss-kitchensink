@@ -16,7 +16,7 @@ node {
     stage 'Automated tests'
     echo 'This stage simulates automated tests'
     //sh "${mvnHome}/bin/mvn -B -Dmaven.test.failure.ignore verify"
-    sh "${mvnHome}/bin/mvn -B test -Parq-wildfly-embedded-Dmaven.test.failure.ignore verify"
+    sh "${mvnHome}/bin/mvn test -Parq-wildfly-embedded"
 
     stage 'Deploy to QA'
     echo 'Deploying to QA'
