@@ -16,8 +16,13 @@ node {
     stage 'Automated tests'
     echo 'This stage simulates automated tests'
     echo 'Create a test project to be user by JBoss Arquilian integration tests'
-    buildArquilianContainer('kitchensink-test')
-       // -Dmaven.test.failure.ignore verify"
+
+    waitUntil{
+      buildArquilianContainer('kitchensink-test')
+    }
+    echo 'sleeping 5s'
+    sleep 5
+    // -Dmaven.test.failure.ignore verify"
     sh "${mvnHome}/bin/mvn -B clean test -Parq-wildfly-remote"
     echo 'clean arquilian test resources'
     //cleanArquilianResources('kitchensink-test')
@@ -40,6 +45,7 @@ def buildArquilianContainer(String project){
 
     sh "oc new-build --name=kitchensink-arq --binary --strategy=docker -l app=kitchensink-arq || echo 'Build exists'"
     sh "oc start-build kitchensink-arq --from-dir=./osev3/docker/custom-wildfly10 --wait --follow"
+    sh "oc new-app kitchensink-arq -l app=kitchensink-arq || echo 'Container already Exists'"
 }
 
 def cleanArquilianResources(String project){

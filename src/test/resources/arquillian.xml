@@ -27,7 +27,7 @@
 
    <!-- Force the use of the Servlet 3.0 protocol with all containers, as it is the most mature -->
    <defaultProtocol type="Servlet 3.0">
-     <property name="host">kitchensink-arq.kitchensink-qa.svc.cluster.local</property>
+     <property name="host">kitchensink-arq.kitchensink-test.svc.cluster.local</property>
      <property name="port">8080</property>
    </defaultProtocol>
 
@@ -39,7 +39,7 @@
           <!-- property name="javaVmArguments">-Djboss.socket.binding.port-offset=0</property -->
           <!-- property name="jbossHome">/opt/jboss/wildfly</property -->
 
-          <property name="managementAddress">kitchensink-arq.kitchensink-qa.svc.cluster.local</property>
+          <property name="managementAddress">kitchensink-arq.kitchensink-test.svc.cluster.local</property>
           <property name="managementPort">9990</property>
           <property name="username">admin</property>
           <property name="password">jboss@123</property>
