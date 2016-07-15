@@ -15,8 +15,12 @@ node {
 
     stage 'Automated tests'
     echo 'This stage simulates automated tests'
-    //sh "${mvnHome}/bin/mvn -B -Dmaven.test.failure.ignore verify"
-    sh "${mvnHome}/bin/mvn -B clean package test -Parq-wildfly-embedded"
+    echo 'Create a test project to be user by JBoss Arquilian integration tests'
+    buildArquilianContainer('kitchensink-test')
+       // -Dmaven.test.failure.ignore verify"
+    sh "${mvnHome}/bin/mvn -B clean test -Parq-wildfly-remote"
+    echo 'clean arquilian test resources'
+    //cleanArquilianResources('kitchensink-test')
 
     stage 'Deploy to QA'
     echo 'Deploying to QA'
@@ -28,6 +32,19 @@ node {
     stage 'Deploy to production'
     echo 'Deploying to production'
     deployKitchensink('kitchensink-dev', 'kitchensink')
+}
+
+// Creates a Build and triggers it
+def buildArquilianContainer(String project){
+    projectSet(project)
+
+    sh "oc new-build --name=kitchensink-arq --binary --strategy=docker -l app=kitchensink-arq || echo 'Build exists'"
+    sh "oc start-build kitchensink-arq --from-dir=./osev3/docker/custom-wildfly10 --wait --follow"
+}
+
+def cleanArquilianResources(String project){
+    projectSet(project)
+    sh "oc delete pods,services,buildconfigs,builds,deploymentconfigs,replicationcontrollers -l app=kitchensink-arq"
 }
 
 // Creates a Build and triggers it
