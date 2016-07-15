@@ -20,10 +20,12 @@ node {
     waitUntil{
       buildArquilianContainer('kitchensink-test')
     }
-    echo 'sleeping 5s'
-    sleep 5
+    echo 'sleeping 10s'
+    sleep 10
     // -Dmaven.test.failure.ignore verify"
-    sh "${mvnHome}/bin/mvn -B clean test -Parq-wildfly-remote"
+    retry(2) {
+       sh "${mvnHome}/bin/mvn -B clean test -Parq-wildfly-remote"
+    }
     echo 'clean arquilian test resources'
     //cleanArquilianResources('kitchensink-test')
 
