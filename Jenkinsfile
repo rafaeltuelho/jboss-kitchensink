@@ -46,6 +46,8 @@ def buildArquilianContainer(String project){
     sh "oc new-build --name=kitchensink-arq --binary --strategy=docker -l app=kitchensink-arq || echo 'Build exists'"
     sh "oc start-build kitchensink-arq --from-dir=./osev3/docker/custom-wildfly10 --wait --follow"
     sh "oc new-app kitchensink-arq -l app=kitchensink-arq || echo 'Container already Exists'"
+
+    return true
 }
 
 def cleanArquilianResources(String project){
