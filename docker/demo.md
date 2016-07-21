@@ -80,4 +80,9 @@
  <!-- jta-data-source>java:jboss/datasources/KitchensinkQuickstartDS</jta-data-source -->
  <jta-data-source>java:jboss/datasources/PostgresDS</jta-data-source>
  ...
- ```  
+ ```
+
+### Creating a new app on Openshift from JBDS
+ * Follow the instructions described here
+  * [Debugging Java Applications using the Red Hat Container Development Kit](http://developerblog.redhat.com/2016/07/21/debugging-java-applications-using-the-red-hat-container-development-kit/)
+  * TODO: condifgurar o BuildConfig do template eap64 para usar a variável de ambiente `MAVEN_MIRROR_URL` apontando para um Nexus.
