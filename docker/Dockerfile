@@ -12,8 +12,6 @@ RUN ${JBOSS_HOME}/bin/jboss-cli.sh --file=/tmp/add-jdbc-driver.cli
 COPY keycloak-*-adapter*.zip /tmp/
 #OIDC adapter
 RUN unzip -uo /tmp/keycloak-wildfly-adapter*.zip -d ${JBOSS_HOME}
-#SAML adapter
-#RUN unzip -uo /tmp/keycloak-saml-wildfly-adapter*.zip -d ${JBOSS_HOME}
 WORKDIR ${JBOSS_HOME}/bin
 RUN ${JBOSS_HOME}/bin/jboss-cli.sh --file=adapter-install-offline.cli
 

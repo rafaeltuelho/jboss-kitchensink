@@ -43,7 +43,7 @@
         in the Development Guide for Red Hat JBoss Enterprise Application Platform located here:
 
         https://access.redhat.com/documentation/en/jboss-enterprise-application-platform/
-    
+
     <repositories>
         <repository>
             <id>jboss-enterprise-maven-repository</id>
@@ -313,54 +313,54 @@
                 </dependency>
             </dependencies>
             <build>
-				<plugins>
-					<!-- You need the maven dependency plugin to download locally a zip with
-						the server, unless you provide your own, it will download under the /target
-						directory -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-dependency-plugin</artifactId>
-						<version>${version.maven-dep.plugin}</version>
-						<executions>
-							<execution>
-								<id>unpack</id>
-								<phase>process-test-classes</phase>
-								<goals>
-									<goal>unpack</goal>
-								</goals>
-								<configuration>
-									<artifactItems>
-										<artifactItem>
-											<groupId>org.wildfly</groupId>
-											<artifactId>wildfly-dist</artifactId>
-											<version>${version.wildfly-dist.plugin}</version>
-											<type>zip</type>
-											<overWrite>false</overWrite>
-											<outputDirectory>target</outputDirectory>
-										</artifactItem>
-									</artifactItems>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<version>${version.surefire.plugin}</version>
-						<configuration>
-							<!-- Fork every test because it will launch a separate AS instance -->
-							<forkMode>always</forkMode>
-							<systemPropertyVariables>
-								<java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-								<!-- the maven dependency plugin will have already downloaded the server
-									on /target -->
-								<jboss.home>${project.basedir}/target/wildfly-${version.wildfly-dist.plugin}</jboss.home>
-								<module.path>${project.basedir}/target/wildfly-${version.wildfly-dist.plugin}/modules</module.path>
-							</systemPropertyVariables>
-							<redirectTestOutputToFile>true</redirectTestOutputToFile>
-						</configuration>
-					</plugin>
-				</plugins>
+      				<plugins>
+      					<!-- You need the maven dependency plugin to download locally a zip with
+      						the server, unless you provide your own, it will download under the /target
+      						directory -->
+      					<plugin>
+      						<groupId>org.apache.maven.plugins</groupId>
+      						<artifactId>maven-dependency-plugin</artifactId>
+      						<version>${version.maven-dep.plugin}</version>
+      						<executions>
+      							<execution>
+      								<id>unpack</id>
+      								<phase>process-test-classes</phase>
+      								<goals>
+      									<goal>unpack</goal>
+      								</goals>
+      								<configuration>
+      									<artifactItems>
+      										<artifactItem>
+      											<groupId>org.wildfly</groupId>
+      											<artifactId>wildfly-dist</artifactId>
+      											<version>${version.wildfly-dist.plugin}</version>
+      											<type>zip</type>
+      											<overWrite>false</overWrite>
+      											<outputDirectory>target</outputDirectory>
+      										</artifactItem>
+      									</artifactItems>
+      								</configuration>
+      							</execution>
+      						</executions>
+      					</plugin>
+      					<plugin>
+      						<groupId>org.apache.maven.plugins</groupId>
+      						<artifactId>maven-surefire-plugin</artifactId>
+      						<version>${version.surefire.plugin}</version>
+      						<configuration>
+      							<!-- Fork every test because it will launch a separate AS instance -->
+      							<forkMode>always</forkMode>
+      							<systemPropertyVariables>
+      								<java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+      								<!-- the maven dependency plugin will have already downloaded the server
+      									on /target -->
+      								<jboss.home>${project.basedir}/target/wildfly-${version.wildfly-dist.plugin}</jboss.home>
+      								<module.path>${project.basedir}/target/wildfly-${version.wildfly-dist.plugin}/modules</module.path>
+      							</systemPropertyVariables>
+      							<redirectTestOutputToFile>true</redirectTestOutputToFile>
+      						</configuration>
+      					</plugin>
+      				</plugins>
             </build>
         </profile>
 

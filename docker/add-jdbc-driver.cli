@@ -7,9 +7,9 @@ module add --name=org.postgresql --resources=/tmp/postgresql-9.3-1101.jdbc41.jar
 echo "add the JDBC Driver Subsystem..."
 /subsystem=datasources/jdbc-driver=postgresql:add(driver-name=postgresql,driver-module-name=org.postgresql,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
 
-#data-source add --name=postgresDS --jndi-name=java:jboss/datasources/PostgresDS --driver-name=postgresql --connection-url=jdbc:postgresql://127.0.0.1:5432/postgres --user-name=postgres --password=postgres --validate-on-match=true --background-validation=false --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter
+data-source add --name=PostgresDS --jndi-name=java:jboss/datasources/PostgresDS --driver-name=postgresql --connection-url=jdbc:postgresql://postgresdb:5432/postgres --user-name=postgres --password=postgres --validate-on-match=true --background-validation=false --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter
 
-#/subsystem=datasources/data-source=PostgresDS:test-connection-in-pool
+/subsystem=datasources/data-source=PostgresDS:test-connection-in-pool
 
 stop-embedded-server
 
