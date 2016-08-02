@@ -56,9 +56,10 @@ Username: admin
 Password:
 Login successful.
 
-oc create -f https://raw.githubusercontent.com/redhat-helloworld-msa/jenkins/master/custom-jenkins.build.yaml
+oc project openshift
+oc create -f https://github.com/rafaeltuelho/custom-jenkins-ose-config/blob/master/custom-jenkins.build.yaml
 
-oc start-build custom-jenkins-build --follow
+oc start-build custom-jenkins-pipeline-build --follow
 
 ```
 
