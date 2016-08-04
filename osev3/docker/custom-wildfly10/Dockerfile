@@ -1,4 +1,10 @@
-FROM jboss/wildfly:latest
+FROM jboss/wildfly:10.0.0.Final
+
+# following the instructions described in 'https://docs.openshift.com/enterprise/3.2/creating_images/guidelines.html#use-uid'
+USER root
+RUN chgrp -R 0 /opt/jboss
+RUN chmod -R g+rw /opt/jboss
+RUN find /opt/jboss -type d -exec chmod g+x {} +
 
 USER jboss
 RUN ${JBOSS_HOME}/bin/add-user.sh admin jboss@123 --silent
