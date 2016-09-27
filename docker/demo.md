@@ -75,6 +75,7 @@
    * Specify the credentials using env vars
  * Run your Wildfly conatiner linking it with the Postgres DB.
  * Change the jboss-kitchensink `persistence.xml` to use a PostgresDS
+ 
  ```
  ...
  <!-- jta-data-source>java:jboss/datasources/KitchensinkQuickstartDS</jta-data-source -->

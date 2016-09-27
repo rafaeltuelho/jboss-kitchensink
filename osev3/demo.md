@@ -107,6 +107,10 @@ oc new-app -p MEMORY_LIMIT=1024Mi https://raw.githubusercontent.com/openshift/or
   * credenciais:
     * admin/admin123
 
+> NOTE: sometimes the `router` doesn't work properly. This can happen after restart (vagrant suspend/up) the VM/Box 
+> to workaround this issue access the `openshift` project and do a `scale down/up` the `router` `Pod`.
+> Now try to access some route again!
+
 ## Use Cases
 
 ```
