@@ -75,7 +75,7 @@
     <repositories>
       <repository>
         <id>nexus-repository</id>
-        <url>http://nexus.cicd-tools.svc:8081/content/groups/public/</url>
+        <url>http://nexus.cicd-tools.svc:8081/repository/maven-public/</url>
         <releases>
           <enabled>true</enabled>
         </releases>
@@ -87,7 +87,7 @@
     <pluginRepositories>
       <pluginRepository>
         <id>nexus-plugin-repository</id>
-        <url>http://nexus.cicd-tools.svc:8081/content/groups/public/</url>
+        <url>http://nexus.cicd-tools.svc:8081/repository/maven-public/</url>
         <releases>
           <enabled>true</enabled>
         </releases>
