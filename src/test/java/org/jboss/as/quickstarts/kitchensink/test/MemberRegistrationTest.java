@@ -56,7 +56,7 @@ public class MemberRegistrationTest {
     public void testRegister() throws Exception {
         Member newMember = new Member();
         newMember.setName("Rafael Tuelho");
-        newMember.setEmail("rsoares@redhat.com");
+        newMember.setEmail("rsoares-redhat-com");
         newMember.setPhoneNumber("2125551234");
         memberRegistration.register(newMember);
         assertNotNull(newMember.getId());
