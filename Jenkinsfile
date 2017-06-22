@@ -1,13 +1,11 @@
-node {
+node('maven') {
     stage 'Git checkout'
     echo 'Checking out git repository'
-    git url: 'https://github.com/rafaeltuelho/jboss-kitchensink'
+    git branch: 'master', url: 'http://gogs-cicd-tools.apps.ocp.acme.com/gogsadmin/jboss-kitchensink.git'
 
     stage 'Build project with Maven'
     echo 'Building project'
-    def mvnHome = tool 'M3'
-    def javaHome = tool 'jdk8'
-    sh "${mvnHome}/bin/mvn clean package -Popenshift -DskipTests"
+    sh "mvn clean package -Popenshift -DskipTests"
 
     stage 'Build image and deploy in Dev'
     echo 'Building docker image and deploying to Dev'
@@ -24,7 +22,7 @@ node {
     sleep 15
     // -Dmaven.test.failure.ignore verify"
     retry(2) {
-       sh "${mvnHome}/bin/mvn -B clean test -Parq-wildfly-remote"
+       sh "mvn -B clean test -Parq-wildfly-remote"
     }
     echo 'clean arquilian test resources'
     //cleanArquilianResources('kitchensink-test')
@@ -76,10 +74,6 @@ def deployKitchensink(String origProject, String project){
 
 // Login and set the project
 def projectSet(String project){
-    //Use a credential called openshift-dev
-    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'openshift-dev', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-        sh "oc login --insecure-skip-tls-verify=true -u $env.USERNAME -p $env.PASSWORD https://10.1.2.2:8443"
-    }
     sh "oc new-project ${project} || echo 'Project exists'"
     sh "oc project ${project}"
 }
