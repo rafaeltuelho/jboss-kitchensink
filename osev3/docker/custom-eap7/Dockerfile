@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/jboss-eap-7/eap70-openshift
+FROM registry.access.redhat.com/jboss-eap-7/eap70-openshift:latest
 
 USER 1000
 
