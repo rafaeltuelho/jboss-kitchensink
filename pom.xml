@@ -76,7 +76,7 @@
       <repository>
         <id>nexus-repository</id>
         <!-- url>http://nexus-cicd-tools.apps.ocp.acme.com/repository/maven-public/</url -->
-        <url>https://nexus.apps.ocp.rhbrlab.com/repository/maven-public/</url>
+        <url>http://nexus.apps.ocp.rhbrlab.com/repository/maven-public/</url>
         <releases>
           <enabled>true</enabled>
         </releases>
@@ -89,7 +89,7 @@
       <pluginRepository>
         <id>nexus-plugin-repository</id>
         <!-- url>http://nexus-cicd-tools.apps.ocp.acme.com/repository/maven-public/</url -->
-        <url>https://nexus.apps.ocp.rhbrlab.com/repository/maven-public/</url>
+        <url>http://nexus.apps.ocp.rhbrlab.com/repository/maven-public/</url>
         <releases>
           <enabled>true</enabled>
         </releases>
