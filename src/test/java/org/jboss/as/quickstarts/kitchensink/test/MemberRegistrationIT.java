@@ -35,7 +35,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class MemberRegistrationTest {
+public class MemberRegistrationIT {
     @Deployment
     public static Archive<?> createTestArchive() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
@@ -55,8 +55,8 @@ public class MemberRegistrationTest {
     @Test
     public void testRegister() throws Exception {
         Member newMember = new Member();
-        newMember.setName("Rafael Tuelho");
-        newMember.setEmail("rsoares@redhat.com");
+        newMember.setName("Jane Doe");
+        newMember.setEmail("jane@mailinator.com");
         newMember.setPhoneNumber("2125551234");
         memberRegistration.register(newMember);
         assertNotNull(newMember.getId());
