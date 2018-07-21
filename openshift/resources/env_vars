@@ -1,0 +1,38 @@
+ -p IMAGE_STREAM_NAMESPACE="eap-demo" \
+ -p SOURCE_REPOSITORY_URL="https://github.com/jboss-developer/jboss-eap-quickstarts" \
+ -p SOURCE_REPOSITORY_REF="7.1.0.GA" \
+ -p CONTEXT_DIR="kitchensink" \
+ -e ADMIN_USERNAME=myspecialuser \
+ -e ADMIN_PASSWORD=myspecialp@ssw0rd
+
+#Variáveis de ambiente usadas para o Build da Imagem SCI-WEB usando a imagem Red Hat EAP 7.1 xPaaS
+#especifica os módulos maven de onde os artefatos de deployment da app devem ser copiados
+ARTIFACT_DIR=sci/target,sci-web/target,sci-webservices
+MAVEN_ARGS=-e -Popenshift -DskipTests -Dcom.redhat.xpaas.repo.redhatga package
+MAVEN_ARGS_APPEND=
+MAVEN_MIRROR_URL=http://nexus.embasanet.ba.gov.br:8081/repository/embasa-public/
+MAVEN_CLEAR_REPO=false
+
+# JDBC Drivers
+CUSTOM_INSTALL_DIRECTORIES=openshift/eap71
+
+#Data Sources definitions
+ENV_FILES=/etc/extensions
+
+#credenciais de acesso a interface de gestão do EAP
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=eap@embasa2018
+
+#habilita clustering via JGroups
+JGROUPS_PING_PROTOCOL=openshift.DNS_PING
+OPENSHIFT_KUBE_PING_NAMESPACE=sci-web-dev
+OPENSHIFT_KUBE_PING_LABELS=app=sci-web
+
+# SCI custom Security Domain
+RACF_PROXY_URI=
+PRINCIPAL_CLASS_NAME=
+LDAP_SERVER_URL=
+CUSTOM_ROLES=
+CUSTOM_LOGIN_MODULE_IMPL_NAME=
+CUSTOM_LOGIN_MODULE_JNDI=
+CUSTOM_LOGIN_MODULE_ROLES_QUERY=
