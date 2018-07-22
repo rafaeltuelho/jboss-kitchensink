@@ -2,8 +2,7 @@
 <module xmlns="urn:jboss:module:1.0" name="org.apache.derby">
     <resources>
         <resource-root path="derby-10.14.2.0.jar"/>
-        <resource-root path="derbyclient-10.14.2.0.jar"/>
-        <resource-root path="derbytools-10.14.2.0.jar"/>
+        <resource-root path="derbynet-10.14.2.0.jar"/>
     </resources>
     <dependencies>
         <module name="javax.api"/>
