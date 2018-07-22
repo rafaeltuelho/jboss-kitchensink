@@ -5,7 +5,7 @@ injected_dir=$1
 source /usr/local/s2i/install-common.sh
 
 echo "Copying configuration..."
-copy_injected ${install_dir}/configuration $JBOSS_HOME/standalone/configuration
+cp -v ${install_dir}/configuration/* $JBOSS_HOME/standalone/configuration
 echo "Copying jboss custom modules..."
 install_modules ${injected_dir}/modules
 echo "Configuring JDBC drivers..."
