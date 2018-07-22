@@ -1,0 +1,32 @@
+echo "start an embeded server instance for CLI using standalone-openshift.xml \n"
+embed-server --server-config=standalone-openshift.xml --std-out=echo
+
+echo "create a new Security Domain"
+
+/subsystem=security/security-domain=SCILDAPSecurityDomain/:add(cache-type=infinispan)
+
+/subsystem=security/security-domain=SCILDAPSecurityDomain/authentication=classic:add
+
+/subsystem=security/security-domain=SCILDAPSecurityDomain/authentication=classic:write-attribute(name=login-modules, value=[{"code"=>"DatabaseServerLoginModule", "flag"=>"required", "module-options"=>[("dsJndiName"=>"java:jboss\datasources\A_DOMAINDS")]}])
+
+/subsystem=security/security-domain=SCILDAPSecurityDomain/authentication=classic:
+    write-attribute(name=login-modules, 
+        value=[
+            {
+                "code"=>"br.gov.ba.embasa.auth.module.RacfLdapLoginModule", 
+                "flag"=>"required", 
+                "module-options"=>[
+                        ("password-stacking"=>"useFirstPass"),
+                        ("java.naming.provider.url"=>"${env.LDAP_SERVER_URL:ldap://10.19.0.21:444}"),
+                        ("allowEmptyPasswords"=>"false"),
+                        ("principalClass"=>"${env.PRINCIPAL_CLASS_NAME:br.gov.ba.embasa.auth.sci.SCIPrincipal}"),
+                        ("racfProxyURI"=>"${env.RACF_PROXY_URI:http://sciwebh2.embasanet.ba.gov.br:8180/RacfLdapProxyConnector/Connect}"),
+                        ("useRacfProxy"=>"false")
+                    ]
+            }
+            ])
+
+echo "shutdown embedded server"
+stop-embedded-server
+
+echo "CLI batch finished!" 
