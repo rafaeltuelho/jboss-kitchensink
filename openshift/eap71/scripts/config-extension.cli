@@ -1,16 +1,15 @@
 echo "start an embeded server instance for CLI using standalone-openshift.xml \n"
 embed-server --server-config=standalone-openshift.xml --std-out=echo
 
-echo "crete a new local cache container into ISPN subsystem"
+echo "create a new local cache container into ISPN subsystem"
 /subsystem=infinispan/cache-container=MyCustomCacheContainer:add()
 /subsystem=infinispan/cache-container=MyCustomCacheContainer/local-cache=local:add()
-/subsystem=infinispan/cache-container=MyCustomCacheContainer/local-cache=local/component=eviction:write-attribute(name=strategy=LIRS,max-entries=1000)
 /subsystem=infinispan/cache-container=MyCustomCacheContainer/local-cache=local/component=eviction:write-attribute(name=strategy,value=LIRS)
 /subsystem=infinispan/cache-container=MyCustomCacheContainer/local-cache=local/component=eviction:write-attribute(name=max-entries,value=1000)
 
 echo "create the MyCustomSecurityDomain"
 /subsystem=security/security-domain=MyCustomSecurityDomain/:add(cache-type=default)
-/subsystem=security/security-domain=MyCustomSecurityDomain/authentication=classic:add
+/subsystem=security/security-domain=MyCustomSecurityDomain/authentication=classic:add()
 
 echo "add login modules..."
 /subsystem=security/security-domain=MyCustomSecurityDomain/authentication=classic:\
