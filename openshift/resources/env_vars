@@ -17,22 +17,13 @@ MAVEN_CLEAR_REPO=false
 CUSTOM_INSTALL_DIRECTORIES=openshift/eap71
 
 #Data Sources definitions
-ENV_FILES=/etc/extensions
+ENV_FILES=/configuration/datasources.env
 
 #credenciais de acesso a interface de gestão do EAP
 ADMIN_USERNAME=admin
-ADMIN_PASSWORD=eap@embasa2018
+ADMIN_PASSWORD=eap@123
 
 #habilita clustering via JGroups
 JGROUPS_PING_PROTOCOL=openshift.DNS_PING
-OPENSHIFT_KUBE_PING_NAMESPACE=sci-web-dev
-OPENSHIFT_KUBE_PING_LABELS=app=sci-web
-
-# SCI custom Security Domain
-RACF_PROXY_URI=
-PRINCIPAL_CLASS_NAME=
-LDAP_SERVER_URL=
-CUSTOM_ROLES=
-CUSTOM_LOGIN_MODULE_IMPL_NAME=
-CUSTOM_LOGIN_MODULE_JNDI=
-CUSTOM_LOGIN_MODULE_ROLES_QUERY=
+OPENSHIFT_KUBE_PING_NAMESPACE=myproject
+OPENSHIFT_KUBE_PING_LABELS=app=jboss-kitchensink
