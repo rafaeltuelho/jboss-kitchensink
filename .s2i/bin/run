@@ -14,7 +14,7 @@ source $JBOSS_HOME/bin/launch/logging.sh
 echo "calling ${JBOSS_HOME}/bin/launch/configure.sh"
 source $JBOSS_HOME/bin/launch/configure.sh
 
-log_info "Before start the app I need to perform some custom configuration on EAP configuration (standalone-openshift.xml)..."
+log_warning "Before start the app I need to perform some custom configuration on EAP configuration (standalone-openshift.xml)..."
 log_info "\t to do that I'm going to use jboss-cli in offline mode (embedded-server)."
 $JBOSS_HOME/bin/jboss-cli.sh --file=./config-extension.cli
 
