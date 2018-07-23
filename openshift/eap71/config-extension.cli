@@ -1,52 +1,62 @@
 echo "start an embeded server instance for CLI using standalone-openshift.xml \n"
 embed-server --server-config=standalone-openshift.xml --std-out=echo
 
-echo "create a new Security Domain"
+echo "crete a new local cache container into ISPN subsystem"
+/subsystem=infinispan/cache-container=MyCustomCacheContainer:add()
+/subsystem=infinispan/cache-container=MyCustomCacheContainer/local-cache=local:add()
+/subsystem=infinispan/cache-container=MyCustomCacheContainer/local-cache=local/component=eviction:write-attribute(name=strategy=LIRS,max-entries=1000)
+/subsystem=infinispan/cache-container=MyCustomCacheContainer/local-cache=local/component=eviction:write-attribute(name=strategy,value=LIRS)
+/subsystem=infinispan/cache-container=MyCustomCacheContainer/local-cache=local/component=eviction:write-attribute(name=max-entries,value=1000)
 
-/subsystem=security/security-domain=SCILDAPSecurityDomain/:add(cache-type=default)
+echo "create the MyCustomSecurityDomain"
+/subsystem=security/security-domain=MyCustomSecurityDomain/:add(cache-type=default)
+/subsystem=security/security-domain=MyCustomSecurityDomain/authentication=classic:add
 
-/subsystem=security/security-domain=SCILDAPSecurityDomain/authentication=classic:add
-
-/subsystem=security/security-domain=SCILDAPSecurityDomain/authentication=classic:\
+echo "add login modules..."
+/subsystem=security/security-domain=MyCustomSecurityDomain/authentication=classic:\
     write-attribute(name=login-modules, \
         value=[\
             {\
-                "code"=>"br.gov.ba.embasa.auth.module.RacfLdapLoginModule", \
+                "code"=>"Identity", \
                 "flag"=>"required", \
                 "module-options"=>[\
-                        ("password-stacking"=>"useFirstPass"),\
-                        ("java.naming.provider.url"=>"${env.LDAP_SERVER_URL:ldap://10.19.0.21:444}"),\
-                        ("allowEmptyPasswords"=>"false"),\
-                        ("principalClass"=>"${env.PRINCIPAL_CLASS_NAME:br.gov.ba.embasa.auth.sci.SCIPrincipal}"),\
-                        ("racfProxyURI"=>"${env.RACF_PROXY_URI:http://sciwebh2.embasanet.ba.gov.br:8180/RacfLdapProxyConnector/Connect}"),\
-                        ("useRacfProxy"=>"false")\
+                        ("roles"=>"${CUSTOM_ROLES:ADMIN,OPS,DEV,MONITOR}"),\
+                        ("password-stacking"=>"useFirstPass")\
                     ]\
-            },\
-            {\
-                "code"=>"br.gov.ba.embasa.auth.module.RacfLdapLoginModule", \
-                "flag"=>"required", \
-                "module-options"=>[\
-                        ("password-stacking"=>"useFirstPass"),\
-                        ("java.naming.provider.url"=>"${env.LDAP_SERVER_URL:ldap://10.19.0.21:444}"),\
-                        ("allowEmptyPasswords"=>"false"),\
-                        ("principalClass"=>"${env.PRINCIPAL_CLASS_NAME:br.gov.ba.embasa.auth.sci.SCIPrincipal}"),\
-                        ("racfProxyURI"=>"${env.RACF_PROXY_URI:http://sciwebh2.embasanet.ba.gov.br:8180/RacfLdapProxyConnector/Connect}"),\
-                        ("useRacfProxy"=>"false")\
-                    ]\
-            },\
-            {\
-                "code"=>"br.gov.ba.embasa.auth.module.RacfLdapLoginModule", \
-                "flag"=>"required", \
-                "module-options"=>[\
-                        ("password-stacking"=>"useFirstPass"),\
-                        ("java.naming.provider.url"=>"${env.LDAP_SERVER_URL:ldap://10.19.0.21:444}"),\
-                        ("allowEmptyPasswords"=>"false"),\
-                        ("principalClass"=>"${env.PRINCIPAL_CLASS_NAME:br.gov.ba.embasa.auth.sci.SCIPrincipal}"),\
-                        ("racfProxyURI"=>"${env.RACF_PROXY_URI:http://sciwebh2.embasanet.ba.gov.br:8180/RacfLdapProxyConnector/Connect}"),\
-                        ("useRacfProxy"=>"false")\
-                    ]\
-            }\                        
+            }
             ])
+
+echo "create Data Sources"
+data-source add --name=membersDS \
+ --enabled=true --use-ccm=false --jta=true \
+ --driver-class=org.apache.derby.jdbc.EmbeddedDriver --driver-name=derby \
+ --jndi-name=${env.DATYASOURCE_DERBY_MEMBERS_JNDI_NAME:java:jboss/datasources/KitchensinkQuickstartDS} \
+ --connection-url=${env.DATASOURCE_DERBY_MEMBERS_CONNECTION_URL:jdbc:derby:${jboss.server.base.dir}/derbydata;create=true}
+ --user-name=${env.DATASOURCE_DERBY_MEMBERS_USER_NAME:derby} \
+ --password=${env.DATASOURCE_DERBY_MEMBERS_USER_PASSWORD:derby} \
+ --min-pool-size=${DATASOURCE_DERBY_MEMBERS_MIN_POOL_SIZE:0} \
+ --max-pool-size=${DATASOURCE_DERBY_MEMBERS_MAX_POOL_SIZE:10} \
+ --transaction-isolation=TRANSACTION_READ_UNCOMMITTED \
+ --pool-prefill=false --pool-use-strict-min=false \
+ --flush-strategy=IdleConnections \
+ --new-connection-sql='SELECT 1' \
+ --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.novendor.JDBC4ValidConnectionChecker \
+ --stale-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.novendor.ListStaleConnectionChecker \
+ --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.novendor.ListExceptionSorter \
+ --validate-on-match=true \
+ --background-validation=false \
+ --idle-timeout-minutes=2 --share-prepared-statements=false
+
+xa-data-source add \
+ --name=DerbyEmbeddedXADS \
+ --driver-name=derby \
+ --jndi-name=java:jboss/jdbc/DerbyEmbeddedXADS \
+ --user-name=derby \
+ --password=derby \
+ --same-rm-override=false \
+ --xa-datasource-properties={ \
+  "DatabaseName" => "${jboss.server.base.dir}/derbyxadata", \
+  "CreateDatabase" => "create"}
 
 echo "shutdown embedded server"
 stop-embedded-server

@@ -11,4 +11,4 @@ install_modules ${injected_dir}/modules
 echo "Configuring JDBC drivers..."
 configure_drivers ${injected_dir}/drivers.env
 #echo "configure contom login modules using jboss-cli..."
-#$JBOSS_HOME/bin/jboss-cli.sh --file=config-extension.cli
+$JBOSS_HOME/bin/jboss-cli.sh --file=config-extension.cli
