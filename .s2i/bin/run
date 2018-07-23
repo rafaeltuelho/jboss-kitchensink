@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo -e "\n------------------------------------------------------------------------"
-echo -e "\t executing a custom run script provided by the app source repo in .s2i/run"
+echo -e "\t executing a custom run script provided by the app source repo in .s2i/bin/run"
 echo -e "------------------------------------------------------------------------\n"
 
 # call the xPaaS image's original runtime scripts (the same called during app Deployment)
@@ -9,15 +9,15 @@ echo "calling ${JBOSS_HOME}/bin/launch/openshift-common.sh"
 source ${JBOSS_HOME}/bin/launch/openshift-common.sh
 
 echo "calling ${JBOSS_HOME}/bin/launch/logging.sh"
-source $JBOSS_HOME/bin/launch/logging.sh
+source ${JBOSS_HOME}/bin/launch/logging.sh
 
 echo "calling ${JBOSS_HOME}/bin/launch/configure.sh"
-source $JBOSS_HOME/bin/launch/configure.sh
+source ${JBOSS_HOME}/bin/launch/configure.sh
 
 log_warning "Before start the app I need to perform some custom configuration on EAP configuration (standalone-openshift.xml)..."
 log_info "\t to do that I'm going to use jboss-cli in offline mode (embedded-server)."
-$JBOSS_HOME/bin/jboss-cli.sh --file=./config-extension.cli
+${JBOSS_HOME}/bin/jboss-cli.sh --file=./config-extension.cli
 
 echo -e "\n\n\n"
-log_info " Now I'll call the my custom version of openshift-launch.sh (provided by app source repo in .s2i/openshift-launch.sh)!"
+log_info " Now I'll call the my custom version of openshift-launch.sh (provided by app source repo in .s2i/bin/openshift-launch.sh)!"
 exec ./openshift-launch.sh
