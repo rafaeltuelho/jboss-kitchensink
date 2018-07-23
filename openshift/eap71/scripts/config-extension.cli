@@ -22,15 +22,15 @@ echo "add login modules..."
                         ("roles"=>"${CUSTOM_ROLES:ADMIN,OPS,DEV,MONITOR}"),\
                         ("password-stacking"=>"useFirstPass")\
                     ]\
-            }
+            }\
             ])
 
 echo "create Data Sources"
 data-source add --name=DerbyEmbeddedDS \
  --enabled=true --use-ccm=false --jta=true \
  --driver-class=org.apache.derby.jdbc.EmbeddedDriver --driver-name=derby \
- --jndi-name=${env.DATYASOURCE_DERBY_SAMPLE_JNDI_NAME:java:jboss/datasources/DerbyEmbedded} \
- --connection-url=${env.DATASOURCE_DERBY_SAMPLE_CONNECTION_URL:jdbc:derby:${jboss.server.base.dir}/derbydata;create=true}
+ --jndi-name=${env.DATASOURCE_DERBY_SAMPLE_JNDI_NAME:java:jboss/datasources/DerbyEmbedded} \
+ --connection-url=${env.DATASOURCE_DERBY_SAMPLE_CONNECTION_URL:jdbc:derby:${jboss.server.base.dir}/derbydata;create=true} \
  --user-name=${env.DATASOURCE_DERBY_SAMPLE_USER_NAME:derby} \
  --password=${env.DATASOURCE_DERBY_SAMPLE_USER_PASSWORD:derby} \
  --min-pool-size=${DATASOURCE_DERBY_SAMPLE_MIN_POOL_SIZE:0} \
