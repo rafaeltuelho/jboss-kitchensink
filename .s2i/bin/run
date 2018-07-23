@@ -13,8 +13,8 @@ source ${JBOSS_HOME}/bin/launch/configure.sh
 
 echo -e "Before start the app I need to perform some custom configuration on EAP configuration (standalone-openshift.xml)..."
 echo -e "\t to do that I'm going to use jboss-cli in offline mode (embedded-server)."
-${JBOSS_HOME}/bin/jboss-cli.sh --file=./config-extension.cli
+${JBOSS_HOME}/bin/jboss-cli.sh --file=$HOME/app-scripts/config-extension.cli
 
 echo -e "\n\n\n"
-echo -e " Now I'll call the my custom version of openshift-launch.sh (provided by app source repo in .s2i/bin/openshift-launch.sh)!"
-exec ./openshift-launch.sh
+echo "Now I'll call the my custom version of openshift-launch.sh (provided by app source repo)!"
+exec $HOME/app-scripts/openshift-launch.sh
