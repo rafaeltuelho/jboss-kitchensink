@@ -4,20 +4,7 @@ echo -e "\n---------------------------------------------------------------------
 echo -e "\t executing a custom run script provided by the app source repo in .s2i/bin/run"
 echo -e "------------------------------------------------------------------------\n"
 
-# call the xPaaS image's original runtime scripts (the same called during app Deployment)
-echo "calling ${JBOSS_HOME}/bin/launch/openshift-common.sh"
-source ${JBOSS_HOME}/bin/launch/openshift-common.sh
-
-echo "calling ${JBOSS_HOME}/bin/launch/configure.sh"
-source ${JBOSS_HOME}/bin/launch/configure.sh
-
 echo -e "\n\n\n"
 echo -e "------------------------------------------------------------------------\n"
-echo -e "Before start the app I need to perform some custom configuration on EAP configuration (standalone-openshift.xml)..."
-echo -e "\t to do that I'm going to use jboss-cli in offline mode (embedded-server)."
-${JBOSS_HOME}/bin/jboss-cli.sh --file=$HOME/app-scripts/config-extension.cli
-
-echo -e "\n\n\n"
-echo -e "------------------------------------------------------------------------\n"
-echo "Now I'll call the my custom version of openshift-launch.sh (provided by app source repo)!"
+echo "I'll call the my custom version of openshift-launch.sh (provided by app source repo)!"
 exec $HOME/app-scripts/openshift-launch.sh

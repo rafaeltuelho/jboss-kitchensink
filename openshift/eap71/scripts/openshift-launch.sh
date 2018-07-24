@@ -1,10 +1,21 @@
 #!/bin/sh
 # Openshift EAP launch script
 
+echo -e "\n\n"
+echo "This is a fork of the original $JBOSS_HOME/bin/openshift-launch.sh found in app source repo!!!"
+
+# call the xPaaS image's original runtime scripts (the same called during app Deployment)
+echo "calling ${JBOSS_HOME}/bin/launch/openshift-common.sh"
 source ${JBOSS_HOME}/bin/launch/openshift-common.sh
 
-echo -e "\n\n"
-echo "This is a fork of the original $JBOSS_HOME/bin/openshift-launch.sh found in app source repo (.s2i directory)!!!"
+echo "calling ${JBOSS_HOME}/bin/launch/configure.sh"
+source ${JBOSS_HOME}/bin/launch/configure.sh
+
+echo -e "\n\n\n"
+echo -e "------------------------------------------------------------------------\n"
+echo -e "Before start the app I need to perform some custom configuration on EAP configuration (standalone-openshift.xml)..."
+echo -e "\t to do that I'm going to use jboss-cli in offline mode (embedded-server)."
+${JBOSS_HOME}/bin/jboss-cli.sh --file=$HOME/app-scripts/config-extension.cli
 
 # TERM signal handler
 function clean_shutdown() {
@@ -20,7 +31,7 @@ if [ "${SPLIT_DATA^^}" = "TRUE" ]; then
 
   partitionPV "${DATA_DIR}" "${SPLIT_LOCK_TIMEOUT:-30}"
 else
-  echo "$JBOSS_HOME/bin/launch/configure.sh already called by app's run script"
+  #echo "$JBOSS_HOME/bin/launch/configure.sh already called by app's run script"
   #source $JBOSS_HOME/bin/launch/configure.sh
 
   echo "Running $JBOSS_IMAGE_NAME image, version $JBOSS_IMAGE_VERSION"
