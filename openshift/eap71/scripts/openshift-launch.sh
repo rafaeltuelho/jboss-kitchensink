@@ -1,8 +1,15 @@
 #!/bin/sh
 # Openshift EAP launch script
 
-echo -e "\n\n"
-echo "This is a fork of the original $JBOSS_HOME/bin/openshift-launch.sh found in app source repo!!!"
+echo -e "\n\n\n"
+echo "This is a fork of the original $JBOSS_HOME/bin/openshift-launch.sh found in app source repo and copied to $HOME/app-scripts!!!"
+
+# TERM signal handler
+function clean_shutdown() {
+  echo "*** JBossAS wrapper process ($$) received TERM signal ***"
+  $JBOSS_HOME/bin/jboss-cli.sh -c ":shutdown(timeout=60)"
+  wait $!
+}
 
 # call the xPaaS image's original runtime scripts (the same called during app Deployment)
 echo "calling ${JBOSS_HOME}/bin/launch/openshift-common.sh"
@@ -15,14 +22,9 @@ echo -e "\n\n\n"
 echo -e "------------------------------------------------------------------------\n"
 echo -e "Before start the app I need to perform some custom configuration on EAP configuration (standalone-openshift.xml)..."
 echo -e "\t to do that I'm going to use jboss-cli in offline mode (embedded-server)."
+echo -e "------------------------------------------------------------------------\n"
+echo -e "\n\n\n"
 ${JBOSS_HOME}/bin/jboss-cli.sh --file=$HOME/app-scripts/config-extension.cli
-
-# TERM signal handler
-function clean_shutdown() {
-  echo "*** JBossAS wrapper process ($$) received TERM signal ***"
-  $JBOSS_HOME/bin/jboss-cli.sh -c ":shutdown(timeout=60)"
-  wait $!
-}
 
 if [ "${SPLIT_DATA^^}" = "TRUE" ]; then
   source /opt/partition/partitionPV.sh

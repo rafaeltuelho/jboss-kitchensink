@@ -5,6 +5,7 @@ echo -e "\t executing a custom run script provided by the app source repo in .s2
 echo -e "------------------------------------------------------------------------\n"
 
 echo -e "\n\n\n"
-echo -e "------------------------------------------------------------------------\n"
 echo "I'll call the my custom version of openshift-launch.sh (provided by app source repo)!"
+echo -e "------------------------------------------------------------------------\n"
+echo -e "\n\n\n"
 exec $HOME/app-scripts/openshift-launch.sh
