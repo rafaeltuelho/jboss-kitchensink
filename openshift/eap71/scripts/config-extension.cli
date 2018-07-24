@@ -30,7 +30,7 @@ data-source add --name=DerbyEmbeddedDS \
  --enabled=true --use-ccm=false --jta=true \
  --driver-class=org.apache.derby.jdbc.EmbeddedDriver --driver-name=derby \
  --jndi-name=${env.DATASOURCE_DERBY_SAMPLE_JNDI_NAME:java:jboss/datasources/DerbyEmbedded} \
- --connection-url=${env.DATASOURCE_DERBY_SAMPLE_CONNECTION_URL:jdbc:derby:${jboss.server.base.dir}/derbydata;create=true} \
+ --connection-url=${env.DATASOURCE_DERBY_SAMPLE_CONNECTION_URL:jdbc:derby:${jboss.server.base.dir}/data/derbydata;create=true} \
  --user-name=${env.DATASOURCE_DERBY_SAMPLE_USER_NAME:derby} \
  --password=${env.DATASOURCE_DERBY_SAMPLE_USER_PASSWORD:derby} \
  --min-pool-size=${DATASOURCE_DERBY_SAMPLE_MIN_POOL_SIZE:0} \
@@ -54,7 +54,7 @@ xa-data-source add \
  --password=derby \
  --same-rm-override=false \
  --xa-datasource-properties={ \
-  "DatabaseName" => "${jboss.server.base.dir}/derbyxadata", \
+  "DatabaseName" => "${jboss.server.base.dir}/data/derbyxadata", \
   "CreateDatabase" => "create"}
 
 echo "shutdown embedded server"
