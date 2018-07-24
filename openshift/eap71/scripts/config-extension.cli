@@ -38,7 +38,7 @@ data-source add --name=DerbyEmbeddedDS \
  --transaction-isolation=TRANSACTION_READ_UNCOMMITTED \
  --pool-prefill=false --pool-use-strict-min=false \
  --flush-strategy=IdleConnections \
- --new-connection-sql=SELECT 1 \
+ --new-connection-sql=SELECT 1 FROM SYSIBM.SYSDUMMY1 \
  --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.novendor.JDBC4ValidConnectionChecker \
  --stale-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.novendor.ListStaleConnectionChecker \
  --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.novendor.ListExceptionSorter \
