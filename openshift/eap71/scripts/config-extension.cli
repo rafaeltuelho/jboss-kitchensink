@@ -1,16 +1,22 @@
 echo "start an embeded server instance for CLI using standalone-openshift.xml \n"
 embed-server --server-config=standalone-openshift.xml --std-out=echo
 
+echo
+echo
 echo "create a new local cache container into ISPN subsystem"
 /subsystem=infinispan/cache-container=MyCustomCacheContainer:add()
 /subsystem=infinispan/cache-container=MyCustomCacheContainer/local-cache=local:add()
 /subsystem=infinispan/cache-container=MyCustomCacheContainer/local-cache=local/component=eviction:write-attribute(name=strategy,value=LIRS)
 /subsystem=infinispan/cache-container=MyCustomCacheContainer/local-cache=local/component=eviction:write-attribute(name=max-entries,value=1000)
 
+echo
+echo
 echo "create the MyCustomSecurityDomain"
 /subsystem=security/security-domain=MyCustomSecurityDomain/:add(cache-type=default)
 /subsystem=security/security-domain=MyCustomSecurityDomain/authentication=classic:add()
 
+echo
+echo
 echo "add login modules..."
 /subsystem=security/security-domain=MyCustomSecurityDomain/authentication=classic:\
     write-attribute(name=login-modules, \
@@ -25,6 +31,8 @@ echo "add login modules..."
             }\
             ])
 
+echo
+echo
 echo "create Data Sources"
 data-source add --name=DerbyEmbeddedDS \
  --enabled=true --use-ccm=false --jta=true \
@@ -57,6 +65,13 @@ xa-data-source add \
   "DatabaseName" => "${jboss.server.base.dir}/data/derbyxadata", \
   "CreateDatabase" => "create"}
 
+echo
+echo
+echo "Check the JSF modules loaded..."
+/subsystem=jsf:list-active-jsf-impls
+
+echo
+echo
 echo "shutdown embedded server"
 stop-embedded-server
 

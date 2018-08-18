@@ -1,8 +1,9 @@
 #!/bin/sh
 # Openshift EAP launch script
 
-echo -e "\n\n\n"
-echo "This is a fork of the original $JBOSS_HOME/bin/openshift-launch.sh found in app source repo and copied to $HOME/app-scripts!!!"
+echo -e "--------------------------------------------------------------------------------------------------------------------------"
+echo -e " This is a fork of the original $JBOSS_HOME/bin/openshift-launch.sh found in app source repo and copied to $HOME/app-scripts!!!"
+echo -e "--------------------------------------------------------------------------------------------------------------------------"
 
 # TERM signal handler
 function clean_shutdown() {
@@ -19,10 +20,10 @@ echo "calling ${JBOSS_HOME}/bin/launch/configure.sh"
 source ${JBOSS_HOME}/bin/launch/configure.sh
 
 echo -e "\n\n\n"
-echo -e "------------------------------------------------------------------------\n"
+echo -e "---------------------------------------------------------------------------------------------------------------------"
 echo -e "Before start the app I need to perform some custom configuration on EAP configuration (standalone-openshift.xml)..."
 echo -e "\t to do that I'm going to use jboss-cli in offline mode (embedded-server)."
-echo -e "------------------------------------------------------------------------\n"
+echo -e "---------------------------------------------------------------------------------------------------------------------"
 echo -e "\n\n\n"
 ${JBOSS_HOME}/bin/jboss-cli.sh --file=$HOME/app-scripts/config-extension.cli
 

@@ -1,11 +1,13 @@
 #!/bin/sh
 
-echo -e "\n------------------------------------------------------------------------"
-echo -e "\t executing a custom run script provided by the app source repo in .s2i/bin/run"
-echo -e "------------------------------------------------------------------------\n"
+echo -e "\n"
+echo -e "-------------------------------------------------------------------------------------"
+echo -e " Executing a custom run script provided by the app source repo in .s2i/bin/run"
+echo -e "-------------------------------------------------------------------------------------"
 
-echo -e "\n\n\n"
-echo "I'll call the my custom version of openshift-launch.sh (provided by app source repo)!"
-echo -e "------------------------------------------------------------------------\n"
-echo -e "\n\n\n"
+echo -e "\n"
+echo -e "-------------------------------------------------------------------------------------"
+echo -e " I'll call the my custom version of openshift-launch.sh (provided by app source repo)!"
+echo -e "-------------------------------------------------------------------------------------"
+echo -e "\n"
 exec $HOME/app-scripts/openshift-launch.sh
