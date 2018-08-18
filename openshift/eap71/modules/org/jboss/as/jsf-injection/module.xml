@@ -1,11 +1,13 @@
-<module xmlns="urn:jboss:module:1.5" name="org.jboss.as.jsf-injection">
+<module xmlns="urn:jboss:module:1.5" name="org.jboss.as.jsf-injection" slot="mojarra-2.1.19">
     <properties>
         <property name="jboss.api" value="private"/>
     </properties>
 
     <resources>
-        <resource-root path="wildfly-jsf-injection-7.1.2.GA-redhat-1.jar"/>
-        <resource-root path="weld-core-jsf-2.4.7.Final-redhat-1.jar"/>
+        <!-- resource-root path="wildfly-jsf-injection-7.1.2.GA-redhat-1.jar"/>
+        <resource-root path="weld-core-jsf-2.4.7.Final-redhat-1.jar"/ -->
+        <resource-root path="wildfly-jsf-injection.jar"/>
+        <resource-root path="weld-core-jsf.jar"/>
     </resources>
 
     <dependencies>
