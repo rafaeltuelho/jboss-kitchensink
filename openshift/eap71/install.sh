@@ -19,7 +19,7 @@ chmod a+x $HOME/app-scripts/*
 echo "Copy jsf-injection jars..."
 #mkdir -p $JBOSS_HOME/modules/system/layers/openshift/org/jboss/as/jsf-injection
 find $JBOSS_HOME/modules -type f -name "wildfly-jsf-injection*.jar" \
- -exec cp {} $JBOSS_HOME/modules/org/jboss/as/mojarra-2.1.19/jsf-injection/wildfly-jsf-injection.jar \;
+ -exec cp {} $JBOSS_HOME/modules/org/jboss/as/jsf-injection/mojarra-2.1.19/wildfly-jsf-injection.jar \;
 
 find $JBOSS_HOME/modules -type f -name "weld-core-jsf*.jar" \
  -exec cp {} $JBOSS_HOME/modules/org/jboss/as/jsf-injection/mojarra-2.1.19/weld-core-jsf.jar \;
