@@ -67,11 +67,6 @@ xa-data-source add \
 
 echo
 echo
-echo "Check the JSF modules loaded..."
-/subsystem=jsf:list-active-jsf-impls
-
-echo
-echo
 echo "shutdown embedded server"
 stop-embedded-server
 

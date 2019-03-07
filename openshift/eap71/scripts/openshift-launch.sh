@@ -1,5 +1,5 @@
 #!/bin/sh
-# Openshift EAP launch script
+# Custom Openshift EAP launch script
 
 echo -e "--------------------------------------------------------------------------------------------------------------------------"
 echo -e " This is a fork of the original $JBOSS_HOME/bin/openshift-launch.sh found in app source repo and copied to $HOME/app-scripts!!!"
@@ -25,6 +25,7 @@ echo -e "Before start the app I need to perform some custom configuration on EAP
 echo -e "\t to do that I'm going to use jboss-cli in offline mode (embedded-server)."
 echo -e "---------------------------------------------------------------------------------------------------------------------"
 echo -e "\n\n\n"
+
 ${JBOSS_HOME}/bin/jboss-cli.sh --file=$HOME/app-scripts/config-extension.cli
 
 if [ "${SPLIT_DATA^^}" = "TRUE" ]; then
@@ -34,9 +35,6 @@ if [ "${SPLIT_DATA^^}" = "TRUE" ]; then
 
   partitionPV "${DATA_DIR}" "${SPLIT_LOCK_TIMEOUT:-30}"
 else
-  #echo "$JBOSS_HOME/bin/launch/configure.sh already called by app's run script"
-  #source $JBOSS_HOME/bin/launch/configure.sh
-
   echo "Running $JBOSS_IMAGE_NAME image, version $JBOSS_IMAGE_VERSION"
 
   trap "clean_shutdown" TERM
